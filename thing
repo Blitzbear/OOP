@@ -56,3 +56,168 @@ public class Stmain{
         student2.display();
     }
 }
+
+
+//Qn2
+class Employee {
+    String Ename;
+    int Eid;
+    double Basic;
+    double DA;
+    double Gross_Sal;
+    double Net_Sal;
+
+    // Zero-argument constructor
+    public Employee() {
+        Ename = "";
+        Eid = 0;
+        Basic = 0.0;
+        DA = 0.0;
+        Gross_Sal = 0.0;
+        Net_Sal = 0.0;
+    }
+
+    // Parameterized constructor
+    public Employee(String name, int id, double basic) {
+        Ename = name;
+        Eid = id;
+        Basic = basic;
+        compute_net_sal();
+    }
+
+    void compute_net_sal() {
+        DA = 0.52 * Basic;
+        Gross_Sal = Basic + DA;
+        Net_Sal = Gross_Sal - 0.3 * Gross_Sal; // 30% IT deduction
+    }
+
+    void display() {
+        System.out.println("Employee ID: " + Eid);
+        System.out.println("Employee Name: " + Ename);
+        System.out.println("Basic Salary: " + Basic);
+        System.out.println("DA: " + DA);
+        System.out.println("Gross Salary: " + Gross_Sal);
+        System.out.println("Net Salary: " + Net_Sal);
+    }
+}
+public class mainemployee{
+    public static void main(String[] args) {
+        // Using zero-argument constructor
+        Employee employee1 = new Employee();
+        employee1.Ename = "Alice";
+        employee1.Eid = 101;
+        employee1.Basic = 50000;
+        employee1.compute_net_sal();
+        System.out.println("Using zero-argument constructor:");
+        employee1.display();
+
+        System.out.println();
+
+        // Using parameterized constructor
+        Employee employee2 = new Employee("Bob", 102, 60000);
+        System.out.println("Using parameterized constructor:");
+        employee2.display();
+    }
+}
+
+//Qn3
+class BankAccount {
+    String depositorName;
+    int accountNumber;
+    String accountType;
+    double balanceAmount;
+    static double rateOfInterest = 0.04; // Assuming a static rate of interest
+    static double minimumBalance = 1000; // Minimum balance requirement
+
+    // Default constructor
+    public BankAccount() {
+        depositorName = "";
+        accountNumber = 0;
+        accountType = "";
+        balanceAmount = 0.0;
+    }
+
+    // Parameterized constructor
+    public BankAccount(String name, int accountNum, String type, double balance) {
+        depositorName = name;
+        accountNumber = accountNum;
+        accountType = type;
+        balanceAmount = balance;
+    }
+
+    // Method to deposit amount
+    void deposit(double amount) {
+        balanceAmount += amount;
+        System.out.println("Deposited: $" + amount);
+        System.out.println("New Balance: $" + balanceAmount);
+    }
+
+    // Method to withdraw amount after checking for minimum balance
+    void withdraw(double amount) {
+        if (balanceAmount - amount >= minimumBalance) {
+            balanceAmount -= amount;
+            System.out.println("Withdrawn: $" + amount);
+            System.out.println("New Balance: $" + balanceAmount);
+        } else {
+            System.out.println("Insufficient balance. Cannot withdraw.");
+        }
+    }
+
+    // Method to display account details
+    void display() {
+        System.out.println("Account Holder: " + depositorName);
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Type: " + accountType);
+        System.out.println("Balance: $" + balanceAmount);
+    }
+
+    // Static method to display rate of interest
+    static void displayRateOfInterest() {
+        System.out.println("Rate of Interest: " + rateOfInterest * 100 + "%");
+    }
+}
+public class mainbank{
+    public static void main(String[] args) {
+        BankAccount account1 = new BankAccount("Alice", 123456, "Savings", 5000);
+        System.out.println("Account 1 Details:");
+        account1.display();
+
+        System.out.println();
+
+        BankAccount account2 = new BankAccount("Bob", 789012, "Current", 10000);
+        System.out.println("Account 2 Details:");
+        account2.display();
+
+        System.out.println();
+
+        account1.deposit(2000);
+        account2.withdraw(1500);
+
+        System.out.println();
+
+        System.out.println("Rate of Interest:");
+        BankAccount.displayRateOfInterest();
+    }
+}
+
+//Qn4
+class Counter {
+    static int count = 0; // Static data member to count the number of objects
+
+    Counter() {
+        count++; // Increment count when an object is created
+    }
+
+    static void showCount() {
+        System.out.println("Number of objects created: " + count);
+    }
+
+    public static void main(String[] args) {
+        Counter c1 = new Counter();
+        Counter c2 = new Counter();
+        Counter c3 = new Counter();
+
+        Counter.showCount(); // Display the count of objects
+    }
+}
+
