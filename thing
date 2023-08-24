@@ -1,0 +1,58 @@
+class Student {
+    String sname;
+    int[] marks_array;
+    int total;
+    double avg;
+
+    // Zero-argument constructor
+    public Student() {
+        sname = "";
+        marks_array = new int[0];
+        total = 0;
+        avg = 0.0;
+    }
+
+    // Parameterized constructor
+    public Student(String name, int[] marks) {
+        sname = name;
+        marks_array = marks;
+        compute();
+    }
+
+    void compute() {
+        total = 0;
+        for (int mark : marks_array) {
+            total += mark;
+        }
+        avg = (double) total / marks_array.length;
+    }
+
+    void display() {
+        System.out.println("Student Name: " + sname);
+        System.out.print("Marks: ");
+        for (int mark : marks_array) {
+            System.out.print(mark + " ");
+        }
+        System.out.println("\nTotal Marks: " + total);
+        System.out.println("Average Marks: " + avg);
+    }
+}
+public class Stmain{
+    public static void main(String[] args) {
+        // Using zero-argument constructor
+        Student student1 = new Student();
+        student1.sname = "Alice";
+        student1.marks_array = new int[]{80, 85, 90, 78, 92};
+        student1.compute();
+        System.out.println("Using zero-argument constructor:");
+        student1.display();
+
+        System.out.println();
+
+        // Using parameterized constructor
+        int[] marks = {75, 82, 88, 95, 70};
+        Student student2 = new Student("Bob", marks);
+        System.out.println("Using parameterized constructor:");
+        student2.display();
+    }
+}
