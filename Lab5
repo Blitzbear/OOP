@@ -1,0 +1,31 @@
+public class Employee {
+    private String firstName;
+    private String lastName;
+
+    public Employee(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String formatEmployeeName() {
+        String formattedFirstName = this.firstName.substring(0, 1).toUpperCase() + this.firstName.substring(1).toLowerCase();
+        String formattedLastName = this.lastName.substring(0, 1).toUpperCase() + this.lastName.substring(1).toLowerCase();
+        return formattedFirstName + " " + formattedLastName;
+    }
+
+    public String generateEmail() {
+        String formattedFirstName = this.firstName.toLowerCase();
+        String formattedLastName = this.lastName.toLowerCase();
+        String email = formattedFirstName.charAt(0) + formattedLastName + "@example.com";
+        return email;
+    }
+
+    public static void main(String[] args) {
+        Employee employee = new Employee("JOHN", "DOE");
+        String formattedName = employee.formatEmployeeName();
+        String email = employee.generateEmail();
+
+        System.out.println("Formatted Name: " + formattedName);
+        System.out.println("Generated Email: " + email);
+    }
+}
