@@ -29,3 +29,219 @@ public class Employee {
         System.out.println("Generated Email: " + email);
     }
 }
+
+2nd Question
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Student {
+     public static String getFirstName(String fullName) {
+        return fullName.substring(0, fullName.indexOf(' '));
+    }
+
+    public static String getInitials(String fullName) {
+        int idxLastWhitespace = fullName.lastIndexOf(' ');
+        return fullName.substring(0, 1) + fullName.substring(idxLastWhitespace + 1, idxLastWhitespace + 2);
+    }
+    public static String removeWhitespace(String fullName){
+        fullName = fullName.replaceAll("\\s", "");
+        return fullName;
+    }
+    public static String names(String s[], String sub, int n){
+        String subsub ="";
+        for (int i=0;i<n;i++){
+            if(s[i].contains(sub)){
+                subsub = subsub+"substring " +sub+ " " + "of " + s[i];
+                i++;
+            }
+        }
+        return subsub;
+    }
+    public void sort(String s[]){
+        Arrays.sort(s);
+        System.out.println("Sorted: "+Arrays.toString(s));
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter full name: ");
+        String fullName = sc.nextLine();
+
+        System.out.println("Initials are: " + getInitials(fullName));
+        
+        System.out.println("Name after removing white spaces is : "+removeWhitespace(fullName));
+        System.out.println("Enter number of students: ");
+        int n = sc.nextInt();
+        Student stu = new Student();
+        System.out.println("Enter Name of Student: ");
+        String []a = new String[n+1];
+        for(int i=0;i<=n;i++){
+            a[i]=sc.nextLine();
+        }
+        System.out.println("Enter Sub String: ");
+        String b = new String();
+         b = sc.nextLine();
+        System.out.println(stu.names(a,b,n));
+        Student s1 = new Student();
+        s1.sort(a);
+        
+
+    }
+   
+}
+Question 5
+import java.util.Scanner;
+
+class Number
+{
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter a Number : ");
+		String n = sc.next();
+		String num = "";
+		int c = 0;
+		
+		for(int i = n.length()-1 ; i >= 0 ; i --)
+		{
+			char ch = n.charAt(i);
+			num = ch + "" + num;
+			c++;
+		
+		if(c%3==0)
+		{
+    		num = ","+num;
+		}
+        }
+		System.out.println("Output String = " + num);
+	
+}
+}
+Question 3
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+public class Student {
+    private int registrationNumber;
+    private String fullName;
+    private GregorianCalendar dateOfJoining;
+    private short semester;
+    private float gpa;
+    private float cgpa;
+    private static int studentCount = 0;
+    
+    public Student(String fullName, GregorianCalendar dateOfJoining, short semester, float gpa, float cgpa) {
+        this.fullName = fullName;
+        this.dateOfJoining = dateOfJoining;
+        this.semester = semester;
+        this.gpa = gpa;
+        this.cgpa = cgpa;
+        
+        studentCount++;
+        int year = dateOfJoining.get(Calendar.YEAR) % 100; // Extract last two digits of the year
+        registrationNumber = year * 100 + studentCount;
+    }
+    
+    public void display() {
+        System.out.println("Registration Number: " + registrationNumber);
+        System.out.println("Full Name: " + fullName);
+        System.out.println("Date of Joining: " + dateOfJoining.getTime());
+        System.out.println("Semester: " + semester);
+        System.out.println("GPA: " + gpa);
+        System.out.println("CGPA: " + cgpa);
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        Student[] students = new Student[5];
+        GregorianCalendar date1 = new GregorianCalendar(2023, Calendar.AUGUST, 31);
+        GregorianCalendar date2 = new GregorianCalendar(2022, Calendar.MARCH, 15);
+        GregorianCalendar date3 = new GregorianCalendar(2021, Calendar.JANUARY, 10);
+        
+        students[0] = new Student("John Doe", date1, (short) 3, 3.8f, 3.7f);
+        students[1] = new Student("Jane Smith", date2, (short) 4, 3.9f, 3.8f);
+        students[2] = new Student("Michael Johnson", date3, (short) 2, 3.6f, 3.5f);
+        students[3] = new Student("Emily Brown", date1, (short) 5, 3.7f, 3.6f);
+        students[4] = new Student("Daniel Lee", date2, (short) 3, 3.5f, 3.4f);
+        
+        for (Student student : students) {
+            student.display();
+        }
+    }
+}
+Question 4
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+public class Student {
+    private int registrationNumber;
+    private String fullName;
+    private GregorianCalendar dateOfJoining;
+    private short semester;
+    private float gpa;
+    private float cgpa;
+    private static int studentCount = 0;
+    
+    public Student(String fullName, GregorianCalendar dateOfJoining, short semester, float gpa, float cgpa) {
+        this.fullName = fullName;
+        this.dateOfJoining = dateOfJoining;
+        this.semester = semester;
+        this.gpa = gpa;
+        this.cgpa = cgpa;
+        
+        studentCount++;
+        int year = dateOfJoining.get(Calendar.YEAR) % 100; // Extract last two digits of the year
+        registrationNumber = year * 100 + studentCount;
+    }
+    
+    public void display() {
+        System.out.println("Registration Number: " + registrationNumber);
+        System.out.println("Full Name: " + fullName);
+        System.out.println("Date of Joining: " + dateOfJoining.getTime());
+        System.out.println("Semester: " + semester);
+        System.out.println("GPA: " + gpa);
+        System.out.println("CGPA: " + cgpa);
+        System.out.println();
+    }
+    
+    public static void sortRecordsBySemesterAndCGPA(Student[] students) {
+        Arrays.sort(students, (s1, s2) -> {
+            if (s1.semester == s2.semester) {
+                return Float.compare(s2.cgpa, s1.cgpa); // Sorting in descending order of CGPA
+            }
+            return Integer.compare(s1.semester, s2.semester);
+        });
+    }
+
+    public static void sortRecordsByName(Student[] students) {
+        Arrays.sort(students, (s1, s2) -> s1.fullName.compareToIgnoreCase(s2.fullName));
+    }
+    
+    public static void main(String[] args) {
+        Student[] students = new Student[5];
+        GregorianCalendar date1 = new GregorianCalendar(2023, Calendar.AUGUST, 31);
+        GregorianCalendar date2 = new GregorianCalendar(2022, Calendar.MARCH, 15);
+        GregorianCalendar date3 = new GregorianCalendar(2021, Calendar.JANUARY, 10);
+        
+        students[0] = new Student("John Doe", date1, (short) 3, 3.8f, 3.7f);
+        students[1] = new Student("Jane Smith", date2, (short) 4, 3.9f, 3.8f);
+        students[2] = new Student("Michael Johnson", date3, (short) 2, 3.6f, 3.5f);
+        students[3] = new Student("Emily Brown", date1, (short) 5, 3.7f, 3.6f);
+        students[4] = new Student("Daniel Lee", date2, (short) 3, 3.5f, 3.4f);
+
+        // Sorting by semester and CGPA
+        sortRecordsBySemesterAndCGPA(students);
+        System.out.println("Sorted by Semester and CGPA:");
+        for (Student student : students) {
+            student.display();
+        }
+
+        // Sorting by name
+        sortRecordsByName(students);
+        System.out.println("Sorted by Name:");
+        for (Student student : students) {
+            student.display();
+        }
+    }
+}
+
