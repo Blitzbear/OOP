@@ -1,0 +1,463 @@
+class Student {
+    String sname;
+    int[] marks_array;
+    int total;
+    double avg;
+
+    // Zero-argument constructor
+    public Student() {
+        sname = "";
+        marks_array = new int[0];
+        total = 0;
+        avg = 0.0;
+    }
+
+    // Parameterized constructor
+    public Student(String name, int[] marks) {
+        sname = name;
+        marks_array = marks;
+        compute();
+    }
+
+    void compute() {
+        total = 0;
+        for (int mark : marks_array) {
+            total += mark;
+        }
+        avg = (double) total / marks_array.length;
+    }
+
+    void display() {
+        System.out.println("Student Name: " + sname);
+        System.out.print("Marks: ");
+        for (int mark : marks_array) {
+            System.out.print(mark + " ");
+        }
+        System.out.println("\nTotal Marks: " + total);
+        System.out.println("Average Marks: " + avg);
+    }
+}
+
+class ScienceStudent extends Student {
+    private int practicalMarks;
+
+    public ScienceStudent(String name, int[] marks, int practicalMarks) {
+        super(name, marks);
+        this.practicalMarks = practicalMarks;
+        compute();
+    }
+
+    @Override
+    void compute() {
+        super.compute();
+        total += practicalMarks;
+        avg = (double) total / (marks_array.length + 1);
+    }
+
+    void displayPracticalMarks() {
+        System.out.println("Practical Marks: " + practicalMarks);
+    }
+}
+
+class ArtsStudent extends Student {
+    private String electiveSubject;
+
+    public ArtsStudent(String name, int[] marks, String electiveSubject) {
+        super(name, marks);
+        this.electiveSubject = electiveSubject;
+    }
+
+    void displayElectiveSubject() {
+        System.out.println("Elective Subject: " + electiveSubject);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a regular Student
+        Student student1 = new Student("Alice", new int[]{80, 85, 90, 78, 92});
+
+        // Create a ScienceStudent
+        ScienceStudent scienceStudent = new ScienceStudent("Bob", new int[]{75, 82, 88, 95, 70}, 85);
+
+        // Create an ArtsStudent
+        ArtsStudent artsStudent = new ArtsStudent("Charlie", new int[]{92, 88, 76, 90, 85}, "Literature");
+
+        // Demonstrate dynamic polymorphism
+        Student[] students = {student1, scienceStudent, artsStudent};
+
+        for (Student student : students) {
+            student.display();
+            if (student instanceof ScienceStudent) {
+                ((ScienceStudent) student).displayPracticalMarks();
+            } else if (student instanceof ArtsStudent) {
+                ((ArtsStudent) student).displayElectiveSubject();
+            }
+            System.out.println();
+        }
+    }
+}
+Qn2
+
+class Employee {
+    String empId;
+    String empName;
+    double salary;
+
+    public Employee(String empId, String empName) {
+        this.empId = empId;
+        this.empName = empName;
+    }
+
+    public void calculateSalary() {
+        // Base implementation
+    }
+
+    public void displayEmployeeDetails() {
+        System.out.println("Employee ID: " + empId);
+        System.out.println("Employee Name: " + empName);
+        System.out.println("Salary: " + salary);
+    }
+}
+
+class PartTimeEmp extends Employee {
+    int hoursWorked;
+    static final double hourlyRate = 15.0; // Example hourly rate
+
+    public PartTimeEmp(String empId, String empName, int hoursWorked) {
+        super(empId, empName);
+        this.hoursWorked = hoursWorked;
+        calculateSalary();
+    }
+
+    @Override
+    public void calculateSalary() {
+        salary = hoursWorked * hourlyRate;
+    }
+
+    @Override
+    public void displayEmployeeDetails() {
+        super.displayEmployeeDetails();
+        System.out.println("Hours Worked: " + hoursWorked);
+        System.out.println("Hourly Rate: " + hourlyRate);
+    }
+}
+
+class FullTimeEmp extends Employee {
+    double bonus;
+    double deductions;
+
+    public FullTimeEmp(String empId, String empName, double bonus, double deductions) {
+        super(empId, empName);
+        this.bonus = bonus;
+        this.deductions = deductions;
+        calculateSalary();
+    }
+
+    @Override
+    public void calculateSalary() {
+        salary = 50000 + bonus - deductions; // Base salary plus bonus minus deductions
+    }
+
+    @Override
+    public void displayEmployeeDetails() {
+        super.displayEmployeeDetails();
+        System.out.println("Bonus: " + bonus);
+        System.out.println("Deductions: " + deductions);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Employee partTimeEmployee = new PartTimeEmp("PT001", "John", 20);
+        Employee fullTimeEmployee = new FullTimeEmp("FT001", "Alice", 5000, 1000);
+
+        partTimeEmployee.displayEmployeeDetails();
+        System.out.println();
+        fullTimeEmployee.displayEmployeeDetails();
+    }
+}
+
+Qn3
+import java.util.Date;
+
+class Person {
+    private String name;
+    private Date birthDate;
+
+    public Person(String name, Date birthDate) {
+        this.name = name;
+        this.birthDate = birthDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+}
+
+class CollegeGraduate extends Person {
+    private double gpa;
+    private int graduationYear;
+
+    public CollegeGraduate(String name, Date birthDate, double gpa, int graduationYear) {
+        super(name, birthDate);
+        this.gpa = gpa;
+        this.graduationYear = graduationYear;
+    }
+
+    public double getGpa() {
+        return gpa;
+    }
+
+    public int getGraduationYear() {
+        return graduationYear;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a Person object
+        Person person = new Person("John Smith", new Date(1990, 5, 15));
+
+        // Create a CollegeGraduate object
+        CollegeGraduate graduate = new CollegeGraduate("Alice Johnson", new Date(1995, 3, 20), 3.8, 2020);
+
+        // Display information about the Person
+        System.out.println("Person's Name: " + person.getName());
+        System.out.println("Person's Birth Date: " + person.getBirthDate());
+
+        // Display information about the CollegeGraduate
+        System.out.println("\nCollege Graduate's Name: " + graduate.getName());
+        System.out.println("College Graduate's Birth Date: " + graduate.getBirthDate());
+        System.out.println("College Graduate's GPA: " + graduate.getGpa());
+        System.out.println("College Graduate's Graduation Year: " + graduate.getGraduationYear());
+    }
+}
+Qn 4
+class Building {
+    private double squareFootage;
+    private int stories;
+
+    public Building(double squareFootage, int stories) {
+        this.squareFootage = squareFootage;
+        this.stories = stories;
+    }
+
+    public double getSquareFootage() {
+        return squareFootage;
+    }
+
+    public void setSquareFootage(double squareFootage) {
+        this.squareFootage = squareFootage;
+    }
+
+    public int getStories() {
+        return stories;
+    }
+
+    public void setStories(int stories) {
+        this.stories = stories;
+    }
+}
+
+class House extends Building {
+    private int bedrooms;
+    private int baths;
+
+    public House(double squareFootage, int stories, int bedrooms, int baths) {
+        super(squareFootage, stories);
+        this.bedrooms = bedrooms;
+        this.baths = baths;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    public void setBedrooms(int bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public int getBaths() {
+        return baths;
+    }
+
+    public void setBaths(int baths) {
+        this.baths = baths;
+    }
+}
+
+class School extends Building {
+    private int classrooms;
+    private String gradeLevel;
+
+    public School(double squareFootage, int stories, int classrooms, String gradeLevel) {
+        super(squareFootage, stories);
+        this.classrooms = classrooms;
+        this.gradeLevel = gradeLevel;
+    }
+
+    public int getClassrooms() {
+        return classrooms;
+    }
+
+    public void setClassrooms(int classrooms) {
+        this.classrooms = classrooms;
+    }
+
+    public String getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(String gradeLevel) {
+        this.gradeLevel = gradeLevel;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Declare objects of each type
+        Building building = new Building(2500, 3);
+        House house = new House(1800, 2, 3, 2);
+        School school = new School(5000, 1, 10, "Elementary");
+
+        // Display information about the objects
+        System.out.println("Building Square Footage: " + building.getSquareFootage());
+        System.out.println("Building Stories: " + building.getStories());
+
+        System.out.println("\nHouse Square Footage: " + house.getSquareFootage());
+        System.out.println("House Stories: " + house.getStories());
+        System.out.println("Number of Bedrooms: " + house.getBedrooms());
+        System.out.println("Number of Baths: " + house.getBaths());
+
+        System.out.println("\nSchool Square Footage: " + school.getSquareFootage());
+        System.out.println("School Stories: " + school.getStories());
+        System.out.println("Number of Classrooms: " + school.getClassrooms());
+        System.out.println("Grade Level: " + school.getGradeLevel());
+    }
+}
+Qn 5
+abstract class Figure {
+    protected int dimension1;
+    protected int dimension2;
+
+    public Figure(int dimension1, int dimension2) {
+        this.dimension1 = dimension1;
+        this.dimension2 = dimension2;
+    }
+
+    public abstract double area();
+}
+
+class Rectangle extends Figure {
+    public Rectangle(int length, int width) {
+        super(length, width);
+    }
+
+    @Override
+    public double area() {
+        return dimension1 * dimension2;
+    }
+}
+
+class Triangle extends Figure {
+    public Triangle(int base, int height) {
+        super(base, height);
+    }
+
+    @Override
+    public double area() {
+        return 0.5 * dimension1 * dimension2;
+    }
+}
+
+class Square extends Figure {
+    public Square(int side) {
+        super(side, side);
+    }
+
+    @Override
+    public double area() {
+        return dimension1 * dimension1;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Figure rectangle = new Rectangle(5, 10);
+        Figure triangle = new Triangle(4, 6);
+        Figure square = new Square(7);
+
+        // Compute and display areas dynamically using the reference of the Figure class
+        System.out.println("Area of Rectangle: " + rectangle.area());
+        System.out.println("Area of Triangle: " + triangle.area());
+        System.out.println("Area of Square: " + square.area());
+    }
+}
+Qn6 
+class Student {
+    String Name;
+    int Id;
+
+    public Student(String name, int id) {
+        this.Name = name;
+        this.Id = id;
+    }
+}
+
+class Sports extends Student {
+    int s_grade;
+
+    public Sports(String name, int id, int s_grade) {
+        super(name, id);
+        this.s_grade = s_grade;
+    }
+}
+
+class Exam extends Student {
+    int e_grade;
+
+    public Exam(String name, int id, int e_grade) {
+        super(name, id);
+        this.e_grade = e_grade;
+    }
+}
+
+class Results extends Sports {
+    int e_grade;
+    String result;
+
+    public Results(String name, int id, int s_grade, int e_grade) {
+        super(name, id, s_grade);
+        this.e_grade = e_grade;
+        calculateResult();
+    }
+
+    public void calculateResult() {
+        // Assuming a simple pass/fail criteria
+        if (s_grade >= 50 && e_grade >= 50) {
+            result = "Pass";
+        } else {
+            result = "Fail";
+        }
+    }
+
+    public void display() {
+        System.out.println("Name: " + Name);
+        System.out.println("ID: " + Id);
+        System.out.println("Sports Grade: " + s_grade);
+        System.out.println("Exam Grade: " + e_grade);
+        System.out.println("Final Result: " + result);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Results studentResult = new Results("Alice", 101, 60, 70);
+        studentResult.display();
+    }
+}
