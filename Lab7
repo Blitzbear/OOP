@@ -1,0 +1,332 @@
+// Building.java defining classes
+package com.course.structure;
+
+public class Building {
+    private double squareFootage;
+    private int stories;
+
+    public Building(double squareFootage, int stories) {
+        this.squareFootage = squareFootage;
+        this.stories = stories;
+    }
+
+    public double getSquareFootage() {
+        return squareFootage;
+    }
+
+    public void setSquareFootage(double squareFootage) {
+        this.squareFootage = squareFootage;
+    }
+
+    public int getStories() {
+        return stories;
+    }
+
+    public void setStories(int stories) {
+        this.stories = stories;
+    }
+}
+
+// House.java
+package com.course.structure;
+
+public class House extends Building {
+    private int bedrooms;
+    private int baths;
+
+    public House(double squareFootage, int stories, int bedrooms, int baths) {
+        super(squareFootage, stories);
+        this.bedrooms = bedrooms;
+        this.baths = baths;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    public void setBedrooms(int bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public int getBaths() {
+        return baths;
+    }
+
+    public void setBaths(int baths) {
+        this.baths = baths;
+    }
+}
+
+// School.java
+package com.course.structure;
+
+public class School extends Building {
+    private int classrooms;
+    private String gradeLevel;
+
+    public School(double squareFootage, int stories, int classrooms, String gradeLevel) {
+        super(squareFootage, stories);
+        this.classrooms = classrooms;
+        this.gradeLevel = gradeLevel;
+    }
+
+    public int getClassrooms() {
+        return classrooms;
+    }
+
+    public void setClassrooms(int classrooms) {
+        this.classrooms = classrooms;
+    }
+
+    public String getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(String gradeLevel) {
+        this.gradeLevel = gradeLevel;
+    }
+}
+-----------main-----------------
+// Main.java
+package com.course.structure;
+
+public class Main {
+    public static void main(String[] args) {
+        // Declare objects of each type
+        Building building = new Building(2500, 3);
+        House house = new House(1800, 2, 3, 2);
+        School school = new School(5000, 1, 10, "Elementary");
+
+        // Display information about the objects
+        System.out.println("Building Square Footage: " + building.getSquareFootage());
+        System.out.println("Building Stories: " + building.getStories());
+
+        System.out.println("\nHouse Square Footage: " + house.getSquareFootage());
+        System.out.println("House Stories: " + house.getStories());
+        System.out.println("Number of Bedrooms: " + house.getBedrooms());
+        System.out.println("Number of Baths: " + house.getBaths());
+
+        System.out.println("\nSchool Square Footage: " + school.getSquareFootage());
+        System.out.println("School Stories: " + school.getStories());
+        System.out.println("Number of Classrooms: " + school.getClassrooms());
+        System.out.println("Grade Level: " + school.getGradeLevel());
+    }
+}
+javac -d ./out ./src/com/course/structure/*.java
+java -cp ./out com.course.structure.Main
+
+
+QN 2
+
+package myPackages.p1;
+
+public class Maximum {
+    public static int max(int a, int b, int c) {
+        return Math.max(Math.max(a, b), c);
+    }
+
+    public static double max(double a, double b, double c) {
+        return Math.max(Math.max(a, b), c);
+    }
+
+    public static int max(int[] arr) {
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
+    public static double max(double[] arr) {
+        double max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+
+    public static int max(int[][] matrix) {
+        int max = matrix[0][0];
+        for (int[] row : matrix) {
+            for (int val : row) {
+                if (val > max) {
+                    max = val;
+                }
+            }
+        }
+        return max;
+    }
+
+    public static double max(double[][] matrix) {
+        double max = matrix[0][0];
+        for (double[] row : matrix) {
+            for (double val : row) {
+                if (val > max) {
+                    max = val;
+                }
+            }
+        }
+        return max;
+    }
+}
+-----------the main method-----------------------
+package myPackages.p1;
+
+public class Main {
+    public static void main(String[] args) {
+        int intMax = Maximum.max(5, 10, 3);
+        double doubleMax = Maximum.max(3.5, 2.7, 6.1);
+
+        int[] intArray = { 12, 7, 5, 9, 15 };
+        double[] doubleArray = { 3.2, 1.1, 5.5, 2.9, 4.7 };
+
+        int arrayIntMax = Maximum.max(intArray);
+        double arrayDoubleMax = Maximum.max(doubleArray);
+
+        int[][] intMatrix = { { 2, 7, 8 }, { 12, 5, 6 }, { 10, 4, 9 } };
+        double[][] doubleMatrix = { { 1.2, 3.7, 2.5 }, { 4.6, 2.1, 5.3 }, { 3.0, 6.2, 2.4 } };
+
+        int matrixIntMax = Maximum.max(intMatrix);
+        double matrixDoubleMax = Maximum.max(doubleMatrix);
+
+        System.out.println("Maximum integer among three: " + intMax);
+        System.out.println("Maximum double among three: " + doubleMax);
+        System.out.println("Maximum integer in array: " + arrayIntMax);
+        System.out.println("Maximum double in array: " + arrayDoubleMax);
+        System.out.println("Maximum integer in matrix: " + matrixIntMax);
+        System.out.println("Maximum double in matrix: " + matrixDoubleMax);
+    }
+}
+to compile the classes javac -d ./out ./src/myPackages/p1/*.java
+to run the main java -cp ./out myPackages.p1.Main
+-----------QN3-------------
+public interface Series {
+    int getNext();  // Get the next number in the series
+    void reset();   // Reset the series
+    void setStart(int start);  // Set the starting value for the series
+}
+--------------------to implement series interface--------------
+public class ByTwos implements Series {
+    private int currentValue;
+
+    public ByTwos() {
+        this.currentValue = 0;  // Default starting value is 0
+    }
+
+    @Override
+    public int getNext() {
+        int nextValue = currentValue;
+        currentValue += 2;  // Generate the next value by adding 2
+        return nextValue;
+    }
+
+    @Override
+    public void reset() {
+        currentValue = 0;  // Reset the series to the starting value
+    }
+
+    @Override
+    public void setStart(int start) {
+        currentValue = start;  // Set the starting value for the series
+    }
+}
+---------main------------
+public class Main {
+    public static void main(String[] args) {
+        ByTwos series = new ByTwos();
+
+        // Get the next values in the series
+        System.out.println("Next Value: " + series.getNext());
+        System.out.println("Next Value: " + series.getNext());
+        System.out.println("Next Value: " + series.getNext());
+
+        // Reset the series
+        series.reset();
+
+        // Get the next values after resetting
+        System.out.println("After Reset:");
+        System.out.println("Next Value: " + series.getNext());
+        System.out.println("Next Value: " + series.getNext());
+
+        // Set a new starting value for the series
+        series.setStart(10);
+
+        // Get the next values with the new starting value
+        System.out.println("After Setting Start to 10:");
+        System.out.println("Next Value: " + series.getNext());
+        System.out.println("Next Value: " + series.getNext());
+    }
+}
+----------------QN4----------------------
+student class 
+public class Student {
+    private int rollNo;
+    private int marks;
+
+    public void putNumber(int rollNo) {
+        this.rollNo = rollNo;
+    }
+
+    public int getNumber() {
+        return rollNo;
+    }
+
+    public void putMarks(int marks) {
+        this.marks = marks;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+}
+--------sports interface----------
+public interface Sports {
+    void putGrade();
+}
+----------implementing sports interface in result class-----------------
+public class Result extends Student implements Sports {
+    private char sportsGrade;
+
+    @Override
+    public void putGrade() {
+        // Simulate a method to calculate the sports grade
+        // In a real scenario, you would implement the logic to calculate the grade
+        // based on sports performance.
+        // Here, we'll use a simple 'A' grade as an example.
+        sportsGrade = 'A';
+    }
+
+    public void generateResult() {
+        int totalMarks = getMarks();
+        int maxMarks = 100;  // Assuming maximum marks are 100 for simplicity
+        double percentage = (double) totalMarks / maxMarks * 100;
+        System.out.println("Roll No: " + getNumber());
+        System.out.println("Marks Obtained: " + getMarks());
+        System.out.println("Sports Grade: " + sportsGrade);
+        System.out.println("Final Result: " + calculateResult(percentage));
+    }
+
+    private String calculateResult(double percentage) {
+        if (percentage >= 60) {
+            return "Pass";
+        } else {
+            return "Fail";
+        }
+    }
+}
+---------------main-----------------
+public class Main {
+    public static void main(String[] args) {
+        Result studentResult = new Result();
+
+        studentResult.putNumber(101);  // Set the roll number
+        studentResult.putMarks(75);    // Set the marks obtained
+        studentResult.putGrade();      // Calculate sports grade
+
+        studentResult.generateResult(); // Generate and display the final result
+    }
+}
