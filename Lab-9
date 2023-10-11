@@ -1,0 +1,193 @@
+Question 1
+class MultiplicationTable extends Thread {
+    private int number;
+
+    public MultiplicationTable(int number) {
+        this.number = number;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Multiplication table for " + number + ":");
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(number + " x " + i + " = " + (number * i));
+        }
+    }
+}
+
+public class Tables {
+    public static void main(String[] args) {
+        MultiplicationTable table5 = new MultiplicationTable(5);
+        MultiplicationTable table7 = new MultiplicationTable(7);
+
+        table5.start();
+        table7.start();
+    }
+}
+
+Question 2
+import java.util.Random;
+
+class RowSumWorker implements Runnable {
+    private int[] row;
+    private int partialSum;
+
+    public RowSumWorker(int[] row) {
+        this.row = row;
+        this.partialSum = 0;
+    }
+
+    public int getPartialSum() {
+        return partialSum;
+    }
+
+    @Override
+    public void run() {
+        for (int num : row) {
+            partialSum += num;
+        }
+    }
+}
+
+public class MatrixRowSum {
+    public static void main(String[] args) {
+        int numRows = 5;  // You can change the number of rows as needed
+        int numCols = 5;  // You can change the number of columns as needed
+        int[][] matrix = new int[numRows][numCols];
+
+        // Initialize the matrix with random integers
+        Random random = new Random();
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                matrix[i][j] = random.nextInt(10); // Random values between 0 and 9
+            }
+        }
+
+        // Create an array to hold thread objects
+        Thread[] threads = new Thread[numRows];
+        RowSumWorker[] workers = new RowSumWorker[numRows];
+
+        // Start worker threads to calculate partial sums for each row
+        for (int i = 0; i < numRows; i++) {
+            workers[i] = new RowSumWorker(matrix[i]);
+            threads[i] = new Thread(workers[i]);
+            threads[i].start();
+        }
+
+        // Wait for all threads to complete
+        try {
+            for (int i = 0; i < numRows; i++) {
+                threads[i].join();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Calculate the complete sum by aggregating partial sums
+        int completeSum = 0;
+        for (int i = 0; i < numRows; i++) {
+            completeSum += workers[i].getPartialSum();
+        }
+
+        // Print the matrix
+        System.out.println("Matrix:");
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        // Print the row sums and complete sum
+        System.out.println("Row Sums:");
+        for (int i = 0; i < numRows; i++) {
+            System.out.println("Row " + i + ": " + workers[i].getPartialSum());
+        }
+        System.out.println("Complete Sum: " + completeSum);
+    }
+}
+Question 3
+import java.util.LinkedList;
+
+class SharedBuffer {
+    private LinkedList<Integer> buffer = new LinkedList<>();
+    private int capacity;
+
+    public SharedBuffer(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void produce(int item) throws InterruptedException {
+        synchronized (this) {
+            while (buffer.size() == capacity) {
+                wait();  // Wait if the buffer is full
+            }
+            buffer.add(item);
+            System.out.println("Produced: " + item);
+            notify();  // Notify the consumer that an item is available
+        }
+    }
+
+    public int consume() throws InterruptedException {
+        synchronized (this) {
+            while (buffer.isEmpty()) {
+                wait();  // Wait if the buffer is empty
+            }
+            int item = buffer.removeFirst();
+            System.out.println("Consumed: " + item);
+            notify();  // Notify the producer that space is available
+            return item;
+        }
+    }
+}
+
+class Producer implements Runnable {
+    private SharedBuffer buffer;
+
+    public Producer(SharedBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        try {
+            for (int i = 1; i <= 5; i++) {
+                buffer.produce(i);
+                Thread.sleep(1000); // Simulate some work
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+class Consumer implements Runnable {
+    private SharedBuffer buffer;
+
+    public Consumer(SharedBuffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        try {
+            for (int i = 0; i < 5; i++) {
+                int item = buffer.consume();
+                Thread.sleep(1000); // Simulate some work
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+public class ProducerConsumerExample {
+    public static void main(String[] args) {
+        SharedBuffer buffer = new SharedBuffer(3);
+        Thread producerThread = new Thread(new Producer(buffer));
+        Thread consumerThread = new Thread(new Consumer(buffer));
+
+        producerThread.start();
+        consumerThread.start();
+    }
+}
