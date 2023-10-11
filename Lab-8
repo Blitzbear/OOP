@@ -1,0 +1,295 @@
+Question 3 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class StudentRecord {
+    private int regNumber;
+    private String fullName;
+    private String dateOfJoining;
+    private short semester;
+    private float gpa;
+    private float cgpa;
+
+    public static class SeatsFilledException extends Exception {
+        public SeatsFilledException(int year) {
+            super("Seats are already filled for the year " + year);
+        }
+    }
+
+    public StudentRecord(int yearOfJoining, int studentNumber, String fullName, String dateOfJoining, short semester, float gpa, float cgpa) throws SeatsFilledException {
+        this.regNumber = (yearOfJoining % 100) * 100 + studentNumber;
+        this.fullName = fullName;
+        this.dateOfJoining = dateOfJoining;
+        this.semester = semester;
+        this.gpa = gpa;
+        this.cgpa = cgpa;
+
+        if (this.regNumber > (yearOfJoining % 100) * 100 + 25) {
+            throw new SeatsFilledException(yearOfJoining);
+        }
+    }
+
+    public void display() {
+        System.out.println("Registration Number: " + regNumber);
+        System.out.println("Full Name: " + fullName);
+        System.out.println("Date of Joining: " + dateOfJoining);
+        System.out.println("Semester: " + semester);
+        System.out.println("GPA: " + gpa);
+        System.out.println("CGPA: " + cgpa);
+    }
+
+    public static void sortBySemesterAndCGPA(StudentRecord[] records) {
+        Arrays.sort(records, (a, b) -> {
+            if (a.semester != b.semester) {
+                return Integer.compare(a.semester, b.semester);
+            } else {
+                return Float.compare(b.cgpa, a.cgpa);
+            }
+        });
+    }
+
+    public static void sortByName(StudentRecord[] records) {
+        Arrays.sort(records, (a, b) -> a.fullName.compareToIgnoreCase(b.fullName));
+    }
+
+    public static void listStudentsStartingWithChar(StudentRecord[] records, char startChar) {
+        for (StudentRecord record : records) {
+            if (record.fullName.startsWith(String.valueOf(startChar))) {
+                record.display();
+            }
+        }
+    }
+
+    public static void listStudentsWithSubstring(StudentRecord[] records, String substring) {
+        for (StudentRecord record : records) {
+            if (record.fullName.contains(substring)) {
+                record.display();
+            }
+        }
+    }
+
+    public void changeFullNameToInitialsAndLastName() {
+        String[] nameParts = fullName.split(" ");
+        StringBuilder initialsAndLastName = new StringBuilder();
+        
+        for (int i = 0; i < nameParts.length - 1; i++) {
+            initialsAndLastName.append(nameParts[i].charAt(0)).append(". ");
+        }
+        initialsAndLastName.append(nameParts[nameParts.length - 1]);
+        
+        fullName = initialsAndLastName.toString();
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<StudentRecord> recordsList = new ArrayList<>();
+
+        while (recordsList.size() < 5) {
+            try {
+                System.out.println("Enter details for Student " + (recordsList.size() + 1));
+                System.out.print("Full Name: ");
+                String fullName = scanner.nextLine();
+                System.out.print("Date of Joining: ");
+                String dateOfJoining = scanner.nextLine();
+                System.out.print("Semester: ");
+                short semester = scanner.nextShort();
+                System.out.print("GPA: ");
+                float gpa = scanner.nextFloat();
+                System.out.print("CGPA: ");
+                float cgpa = scanner.nextFloat();
+                scanner.nextLine(); // Consume the newline character
+
+                recordsList.add(new StudentRecord(2012, recordsList.size() + 1, fullName, dateOfJoining, semester, gpa, cgpa));
+            } catch (SeatsFilledException e) {
+                System.out.println("Exception: " + e.getMessage());
+            }
+        }
+
+        System.out.println("\nStudent Records:");
+        for (StudentRecord record : recordsList) {
+            record.display();
+            System.out.println();
+        }
+
+        sortBySemesterAndCGPA(recordsList.toArray(new StudentRecord[0]));
+        System.out.println("\nStudent Records Sorted by Semester and CGPA:");
+        for (StudentRecord record : recordsList) {
+            record.display();
+            System.out.println();
+        }
+
+        sortByName(recordsList.toArray(new StudentRecord[0]));
+        System.out.println("\nStudent Records Sorted by Name:");
+        for (StudentRecord record : recordsList) {
+            record.display();
+            System.out.println();
+        }
+
+        System.out.print("\nEnter a letter to list students whose names start with that letter: ");
+        char letter = scanner.next().charAt(0);
+        listStudentsStartingWithChar(recordsList.toArray(new StudentRecord[0]), letter);
+
+        scanner.nextLine(); // Consume the newline character
+
+        System.out.print("\nEnter a substring to list students whose names contain that substring: ");
+        String searchSubstring = scanner.nextLine();
+        listStudentsWithSubstring(recordsList.toArray(new StudentRecord[0]), searchSubstring);
+
+        for (StudentRecord record : recordsList) {
+            record.changeFullNameToInitialsAndLastName();
+        }
+        System.out.println("\nStudent Records with Full Names Changed to Initials and Last Name:");
+        for (StudentRecord record : recordsList) {
+            record.display();
+            System.out.println();
+        }
+    }
+}
+
+
+Question - 1
+public class Stack {
+    private int[] stackArray;
+    private int top;
+    private int capacity;
+
+    public static class PushException extends Exception {
+        public PushException(String message) {
+            super(message);
+        }
+    }
+
+    public static class PopException extends Exception {
+        public PopException(String message) {
+            super(message);
+        }
+    }
+
+    public Stack(int capacity) {
+        this.capacity = capacity;
+        stackArray = new int[capacity];
+        top = -1;
+    }
+
+    public void push(int value) throws PushException {
+        if (top >= capacity - 1) {
+            throw new PushException("Stack is full. Cannot push element.");
+        }
+        stackArray[++top] = value;
+    }
+
+    public int pop() throws PopException {
+        if (top < 0) {
+            throw new PopException("Stack is empty. Cannot pop element.");
+        }
+        return stackArray[top--];
+    }
+
+    public boolean isEmpty() {
+        return top < 0;
+    }
+
+    public boolean isFull() {
+        return top == capacity - 1;
+    }
+
+    public int peek() {
+        return stackArray[top];
+    }
+
+    public static void main(String[] args) {
+        Stack stack = new Stack(5);
+
+        try {
+            stack.push(1);
+            stack.push(2);
+            stack.push(3);
+            stack.push(4);
+            stack.push(5);
+
+            System.out.println("Is stack full? " + stack.isFull());
+
+            // Uncomment the following line to trigger a PushException
+            // stack.push(6);
+
+            while (!stack.isEmpty()) {
+                System.out.println("Popped: " + stack.pop());
+            }
+
+            System.out.println("Is stack empty? " + stack.isEmpty());
+
+            // Uncomment the following line to trigger a PopException
+            // stack.pop();
+        } catch (PushException e) {
+            System.out.println("PushException: " + e.getMessage());
+        } catch (PopException e) {
+            System.out.println("PopException: " + e.getMessage());
+        }
+    }
+}
+
+Question 2
+import java.util.Scanner;
+
+public class CurrentDate {
+    private int day;
+    private int month;
+    private int year;
+
+    public CurrentDate() {
+        day = 0;
+        month = 0;
+        year = 0;
+    }
+
+    public static class InvalidDayException extends Exception {
+        public InvalidDayException(String message) {
+            super(message);
+        }
+    }
+
+    public static class InvalidMonthException extends Exception {
+        public InvalidMonthException(String message) {
+            super(message);
+        }
+    }
+
+    public void createDate() throws InvalidDayException, InvalidMonthException {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter year: ");
+        year = scanner.nextInt();
+        System.out.print("Enter month: ");
+        month = scanner.nextInt();
+        System.out.print("Enter day: ");
+        day = scanner.nextInt();
+
+        if (month < 1 || month > 12) {
+            throw new InvalidMonthException("Invalid month. Month should be between 1 and 12.");
+        }
+
+        if (day < 1 || day > 31) {
+            throw new InvalidDayException("Invalid day. Day should be between 1 and 31.");
+        }
+
+        // Perform additional date validity checks here if needed
+    }
+
+    public void displayCurrentDate() {
+        System.out.println("Current Date: " + day + "/" + month + "/" + year);
+    }
+
+    public static void main(String[] args) {
+        CurrentDate currentDate = new CurrentDate();
+
+        try {
+            currentDate.createDate();
+            currentDate.displayCurrentDate();
+        } catch (InvalidMonthException | InvalidDayException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+
